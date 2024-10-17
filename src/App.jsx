@@ -1,30 +1,38 @@
 import { Component } from "react";
 import "./App.css";
-import { teams } from "./assets/teams";
-import Team from "./components/Team";
+import SingleTodo from "./components/SingleTodo";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      teams: teams,
+      todos: {},
     };
   }
 
   render() {
-    const { teams } = this.state;
-
     return (
-      <div className="container">
-        {teams.map((team) => (
-          <Team key={team.id} {...team} />
-        ))}
-        {/* <Team {...teams[0]} />
-        <Team {...teams[1]} />
-        <Team {...teams[2]} /> */}
-        {/* <Team id={teams[0].id} name={teams[0].name} /> */}
-        {/* <Team id={teams[1].id} name={teams[1].name} /> */}
-        {/* <Team id={teams[2].id} name={teams[2].name} /> */}
+      <div className="wrapper">
+        <h1>Todo List App - DOM</h1>
+        <div className="input-group mb-3">
+          <input
+            id="new-todo-input"
+            type="text"
+            className="form-control"
+            placeholder="Add Text..."
+          />
+          <button id="add-todo" className="btn btn-primary" type="button">
+            Add Todo
+          </button>
+        </div>
+        <main>
+          <SingleTodo />
+          <SingleTodo />
+          <SingleTodo />
+          <SingleTodo />
+          <SingleTodo />
+          <SingleTodo />
+        </main>
       </div>
     );
   }

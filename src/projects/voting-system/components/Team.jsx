@@ -5,12 +5,8 @@ class Team extends Component {
     super(props);
   }
 
-  handleVoteIncrease = (teamId) => {
-    console.log("yay", teamId);
-  };
-
   render() {
-    const { id, name, img, count } = this.props;
+    const { id, name, img, count, handleVote } = this.props;
 
     return (
       <div className="box">
@@ -18,7 +14,7 @@ class Team extends Component {
         <h3>{name}</h3>
         <button
           onClick={() => {
-            this.handleVoteIncrease(id);
+            handleVote(id);
           }}
         >
           Vote
