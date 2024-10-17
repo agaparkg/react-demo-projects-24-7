@@ -6,11 +6,55 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      todos: {},
+      editId: null,
+      todos: {
+        1: {
+          text: "Todo 1",
+          completed: false,
+        },
+        2: {
+          text: "Todo 2",
+          completed: false,
+        },
+        3: {
+          text: "Todo 3",
+          completed: false,
+        },
+        4: {
+          text: "Todo 4",
+          completed: false,
+        },
+      },
     };
   }
 
+  handleTodoDelete = (todoId) => {
+    const { todos } = this.state;
+
+    const newTodos = JSON.parse(JSON.stringify(todos));
+
+    delete newTodos[todoId];
+
+    this.setState({ todos: newTodos });
+  };
+
+  handleTodoComplete = (completeStatus, todoId) => {
+    const { todos } = this.state;
+
+    const newTodos = JSON.parse(JSON.stringify(todos));
+
+    newTodos[todoId].completed = completeStatus;
+
+    this.setState({ todos: newTodos });
+  };
+
+  handleEditIdChange = (todoId) => {
+    this.setState({ editId: todoId });
+  };
+
   render() {
+    const { todos, editId } = this.state;
+
     return (
       <div className="wrapper">
         <h1>Todo List App - DOM</h1>
@@ -26,12 +70,21 @@ class App extends Component {
           </button>
         </div>
         <main>
-          <SingleTodo />
-          <SingleTodo />
-          <SingleTodo />
-          <SingleTodo />
-          <SingleTodo />
-          <SingleTodo />
+          {Object.entries(todos).map(([key, value]) => {
+            const editMode = editId == key;
+
+            return (
+              <SingleTodo
+                key={key}
+                {...value}
+                id={key}
+                editMode={editMode}
+                handleTodoComplete={this.handleTodoComplete}
+                handleTodoDelete={this.handleTodoDelete}
+                handleEditIdChange={this.handleEditIdChange}
+              />
+            );
+          })}
         </main>
       </div>
     );
