@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import "./App.css";
-import { initialItems } from "./projects/React-useMemo/utils/utils";
+import { initialItems } from "./utils/utils";
 
 const App = () => {
   const [count, setCount] = useState(0);
