@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import data from "./assets/data";
+import data from "../../assets/data";
 import Helper from "./components/Helper";
 
 const App = () => {
