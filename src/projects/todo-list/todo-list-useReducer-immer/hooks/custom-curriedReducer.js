@@ -15,33 +15,40 @@ const reducer = (draft, action) => {
         completed: false,
       };
       updateLocalStorage(draft.todos);
-      return;
+      break;
+      // return;
     }
     case "edit_todo": {
       draft.editId = action.payload;
-      return;
+      break;
+      // return;
     }
     case "delete_todo": {
       delete draft.todos[action.payload];
       updateLocalStorage(draft.todos);
-      return;
+      break;
+      // return;
     }
     case "complete_todo": {
       draft.todos[action.payload.id].completed = action.payload.checked;
 
       updateLocalStorage(draft.todos);
-      return;
+      break;
+      // return;
     }
     case "save_todo": {
       draft.editId = null;
       draft.todos[action.payload.id].text = action.payload.text;
 
       updateLocalStorage(draft.todos);
-      return;
+      break;
+      // return;
     }
     case "clear_all": {
       draft.todos = {};
       updateLocalStorage({});
+      break;
+      // return;
     }
     case "clear_completed_todos": {
       const newArr = Object.entries(draft.todos); // [[id, value], [], []]
@@ -53,7 +60,8 @@ const reducer = (draft, action) => {
       }
 
       updateLocalStorage(draft.todos);
-      return;
+      break;
+      // return;
     }
   }
 };
