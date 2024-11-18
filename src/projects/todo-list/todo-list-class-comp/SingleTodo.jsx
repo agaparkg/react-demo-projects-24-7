@@ -4,13 +4,6 @@ class SingleTodo extends Component {
   //   handleDelete = (e) => {
   //     console.log(e.target.id);
   //     // handleTodoDelete();
-  //     // handleTodoDelete();
-  //     // handleTodoDelete();
-  //     // handleTodoDelete();
-  //     // handleTodoDelete();
-  //     // handleTodoDelete();
-  //     // handleTodoDelete();
-  //     // handleTodoDelete();
   //     this.props.delFn(e.target.id);
   //   };
 
