@@ -1,5 +1,6 @@
-import { useReducer } from "react";
+import { act, useReducer } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { produce } from "immer";
 
 const updateLocalStorage = (todos) => {
   localStorage.setItem("todos", JSON.stringify(todos));
@@ -8,86 +9,62 @@ const updateLocalStorage = (todos) => {
 const reducer = (state, action) => {
   switch (action.type) {
     case "add_new_todo": {
-      const newState = JSON.parse(JSON.stringify(state));
       const newId = uuidv4();
 
-      newState.todos[newId] = {
-        text: action.payload,
-        completed: false,
-      };
+      return produce(state, (draft) => {
+        draft.todos[newId] = {
+          text: action.payload,
+          completed: false,
+        };
 
-      updateLocalStorage(newState.todos);
-
-      return newState;
-
-      //   OPTION 2
-      //   const newId = uuidv4();
-      //   return {
-      //     ...state,
-      //     todos: {
-      //       ...state.todos,
-      //       [newId]: {
-      //         text: action.payload,
-      //         completed: false,
-      //       },
-      //     },
-      //   };
+        updateLocalStorage(draft.todos);
+      });
     }
     case "edit_todo": {
-      return {
-        ...state,
-        editId: action.payload,
-      };
+      return produce(state, (draft) => {
+        draft.editId = action.payload;
+      });
     }
     case "delete_todo": {
-      const newState = JSON.parse(JSON.stringify(state));
-      delete newState.todos[action.payload];
+      return produce(state, (draft) => {
+        delete draft.todos[action.payload];
 
-      updateLocalStorage(newState.todos);
-      return newState;
+        updateLocalStorage(draft.todos);
+      });
     }
     case "complete_todo": {
-      const newState = JSON.parse(JSON.stringify(state));
+      return produce(state, (draft) => {
+        draft.todos[action.payload.id].completed = action.payload.checked;
 
-      newState.todos[action.payload.id].completed = action.payload.checked;
-
-      updateLocalStorage(newState.todos);
-      return newState;
+        updateLocalStorage(draft.todos);
+      });
     }
 
     case "save_todo": {
-      const newState = JSON.parse(JSON.stringify(state));
-      newState.editId = null;
-      newState.todos[action.payload.id].text = action.payload.text;
+      return produce(state, (draft) => {
+        draft.editId = null;
+        draft.todos[action.payload.id].text = action.payload.text;
 
-      updateLocalStorage(newState.todos);
-      return newState;
+        updateLocalStorage(draft.todos);
+      });
     }
     case "clear_all":
-      updateLocalStorage({});
-      return {
-        ...state,
-        todos: {},
-      };
+      return produce(state, (draft) => {
+        draft.todos = {};
+        updateLocalStorage({});
+      });
     case "clear_completed_todos": {
-      const newState = JSON.parse(JSON.stringify(state));
-      const newArr = Object.entries(newState.todos); // [[id, value], [], []]
+      return produce(state, (draft) => {
+        const newArr = Object.entries(draft.todos); // [[id, value], [], []]
 
-      for (let [id, value] of newArr) {
-        if (value.completed) {
-          delete newState.todos[id];
+        for (let [id, value] of newArr) {
+          if (value.completed) {
+            delete draft.todos[id];
+          }
         }
-      }
 
-      //   Object.entries(newState.todos).forEach(([id, value]) => {
-      //     if (value.completed) {
-      //       delete newState.todos[id];
-      //     }
-      //   });
-
-      updateLocalStorage(newState.todos);
-
-      return newState;
+        updateLocalStorage(draft.todos);
+      });
     }
   }
 };
