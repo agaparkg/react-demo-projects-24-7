@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import "./App.css";
 import SingleTodo from "./components/SingleTodo";
 import { v4 as uuidv4 } from "uuid";
+import { useImmer } from "use-immer";
 
 const updateLocalStorage = (todos) => {
   localStorage.setItem("todos", JSON.stringify(todos));
@@ -28,35 +29,29 @@ const initialTodos = JSON.parse(localStorage.getItem("todos")) || {
 
 const App = () => {
   const [editId, setEditId] = useState(null);
-  const [todos, setTodos] = useState(initialTodos);
+  const [todos, setTodos] = useImmer(initialTodos);
   const inputRef = useRef(null);
 
   const handleTodoDelete = (todoId) => {
-    const newTodos = JSON.parse(JSON.stringify(todos));
-
-    delete newTodos[todoId];
-
-    updateLocalStorage(newTodos);
-    setTodos(newTodos);
+    setTodos((draft) => {
+      delete draft[todoId];
+      updateLocalStorage(draft);
+    });
   };
 
   const handleTodoSave = (newText, todoId) => {
-    const newTodos = JSON.parse(JSON.stringify(todos));
-
-    newTodos[todoId].text = newText;
-
-    updateLocalStorage(newTodos);
-    setTodos(newTodos);
     setEditId(null);
+    setTodos((draft) => {
+      draft[todoId].text = newText;
+      updateLocalStorage(draft);
+    });
   };
 
   const handleTodoComplete = (completeStatus, todoId) => {
-    const newTodos = JSON.parse(JSON.stringify(todos));
-
-    newTodos[todoId].completed = completeStatus;
-
-    updateLocalStorage(newTodos);
-    setTodos(newTodos);
+    setTodos((draft) => {
+      draft[todoId].completed = completeStatus;
+      updateLocalStorage(draft);
+    });
   };
 
   const handleEditIdChange = (todoId) => {

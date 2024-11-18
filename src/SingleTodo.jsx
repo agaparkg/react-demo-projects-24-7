@@ -1,65 +1,74 @@
 import React, { useState } from "react";
+import { InputGroup, Input, Button, InputGroupText } from "reactstrap";
 
-const SingleTodo = ({
-  text,
-  completed,
-  id,
-  handleTodoDelete,
-  handleTodoComplete,
-  handleEditIdChange,
-  handleTodoSave,
-  editMode,
-}) => {
+const SingleTodo = ({ text, completed, dispatchAction, id, editMode }) => {
   const [inputVal, setInputVal] = useState(text);
+
+  const handleSaveClick = () => {
+    if (editMode) {
+      if (inputVal.trim() !== "") {
+        dispatchAction({
+          type: "save_todo",
+          payload: { id, text: inputVal },
+        });
+      } else {
+        alert("Type a text in the input box.");
+      }
+    } else {
+      dispatchAction({
+        type: "edit_todo",
+        payload: id,
+      });
+    }
+  };
 
   const handleInputChange = (e) => {
     setInputVal(e.target.value);
   };
 
-  const handleSaveClick = () => {
-    if (editMode) {
-      if (inputVal.trim() !== "") {
-        handleTodoSave(inputVal, id);
-      } else {
-        alert("Type a text in the input box.");
-      }
-    } else {
-      handleEditIdChange(id);
-    }
-  };
-
   return (
-    <div className="input-group mb-1">
-      <span className="input-group-text">
-        <input
+    <InputGroup style={{ marginBottom: "2px" }}>
+      <InputGroupText>
+        <Input
           checked={completed}
-          id={id}
-          onChange={(e) => handleTodoComplete(e.target.checked, id)}
+          onChange={(e) =>
+            dispatchAction({
+              type: "complete_todo",
+              payload: {
+                checked: e.target.checked,
+                id: id,
+              },
+            })
+          }
+          addon
+          aria-label="Checkbox for following text input"
           type="checkbox"
         />
-      </span>
-      <input
+      </InputGroupText>
+      <Input
         disabled={!editMode}
-        onChange={handleInputChange}
-        type="text"
-        className={`form-control ${completed ? "line-thru" : ""}`}
         value={inputVal}
+        className={completed ? "cross" : ""}
+        onChange={handleInputChange}
       />
-      <button
+      <Button
         onClick={handleSaveClick}
-        className={`btn btn-${editMode ? "success" : "secondary"}`}
-        type="button"
+        color={editMode ? "primary" : "secondary"}
       >
         {editMode ? "Save" : "Edit"}
-      </button>
-      <button
-        onClick={() => handleTodoDelete(id)}
-        className="btn btn-danger"
-        type="button"
+      </Button>
+      <Button
+        onClick={() =>
+          dispatchAction({
+            type: "delete_todo",
+            payload: id,
+          })
+        }
+        color="danger"
       >
         Delete
-      </button>
-    </div>
+      </Button>
+    </InputGroup>
   );
 };
 
