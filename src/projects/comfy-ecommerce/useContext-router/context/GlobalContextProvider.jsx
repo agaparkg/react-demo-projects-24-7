@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { MyContext } from "../../hooks/custom";
 import { data } from "../assets/products-data";
-import { MyContext } from "../hooks/custom";
 import { getStorageItem, setStorageItem } from "../utils/utils";
 
 const GlobalContextProvider = ({ children }) => {
