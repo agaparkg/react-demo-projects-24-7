@@ -22,10 +22,15 @@ const counterSlice = createSlice({
       state.number *= 10;
     },
   },
+  selectors: {
+    selectCount: (state) => state.count,
+    selectNumber: (state) => state.number,
+  },
 });
 
 export const { increment, decrement } = counterSlice.actions;
+// export const { selectCount, selectNumber } = counterSlice.selectors;
 
-console.log("counterSlice", counterSlice, increment());
+// console.log("counterSlice", counterSlice.getSelectors());
 
 export default counterSlice;

@@ -7,8 +7,6 @@ import Todos from "./Todos";
 const App = () => {
   return (
     <div>
-      {/* <Router router={router} /> */}
-      {/* <MyContext.Provider value={value}>{children}</MyContext.Provider> */}
       <Provider store={store}>
         <Counter />
         <Todos />
