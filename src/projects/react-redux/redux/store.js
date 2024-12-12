@@ -1,17 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterSlice from "./counterSlice";
-import todosSlice from "./todosSlice";
+import counterReducer from "./counterSlice";
+import todosReducer from "./todosSlice";
 
 const store = configureStore({
   reducer: {
-    counter: counterSlice.reducer,
-    todos: todosSlice.reducer,
+    counter: counterReducer,
+    todos: todosReducer,
     // comfyState: comfyState.reducer,
   },
 });
 
 export default store;
-
-// const reducer = (state, action) => {
-//     return {...state, count: 1}
-// }

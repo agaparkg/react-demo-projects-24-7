@@ -58,11 +58,4 @@ export const {
   handleTodoSave,
 } = todosSlice.actions;
 
-export default todosSlice;
-
-// const handleAddTodo = (id) => {
-//   return {
-//     type: "todos/handleTodoDelete",
-//     payload: id,
-//   };
-// };
+export default todosSlice.reducer;
